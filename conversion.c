@@ -16,7 +16,11 @@ int trits_to_trytes(const trit_t trits_in[], tryte_t trytes_out[], uint32_t trit
 int trytes_to_trits(const tryte_t trytes_in[], trit_t trits_out[], uint32_t tryte_len)
 {
     for (uint32_t i = 0; i < tryte_len; i++) {
-        int32_to_trits((int32_t)trytes_in[i], &trits_out[i*3], 3);
+        int8_t idx = (int8_t) trytes_in[i] + 13;
+        trits_out[i*3+0] = trits_mapping[idx][0];
+        trits_out[i*3+1] = trits_mapping[idx][1];
+        trits_out[i*3+2] = trits_mapping[idx][2];
+        //printf("%c", seed[i]);
     }
     return 0;
 }
