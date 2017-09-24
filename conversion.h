@@ -20,4 +20,6 @@ int trytes_to_trits(const tryte_t trytes_in[], trit_t trits_out[], uint32_t tryt
 int int32_to_trits(const int32_t value, trit_t trits_out[], uint8_t max_len);
 int tryte_to_trits(const tryte_t tryte, trit_t trits_out[]);
 
+int trits_to_bytes(const trit_t trits_in[], int32_t bytes_out[]);
+
 #endif // CONVERSION_H
