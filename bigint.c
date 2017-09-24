@@ -48,3 +48,35 @@ int bigint_add_bigint(int32_t bigint_one[], int32_t bigint_two[], int32_t bigint
     }
     return 0;
 }
+
+int bigint_sub_bigint(int32_t bigint_one[], int32_t bigint_two[], int32_t bigint_out[], uint8_t len)
+{
+    struct int_bool_pair val;
+    val.hi = true;
+    for (uint8_t i = 0; i < len; i++) {
+        val = full_add(bigint_one[i], ~bigint_two[i], val.hi);
+        bigint_out[i] = val.low;
+    }
+    return 0;
+}
+
+int8_t bigint_cmp_bigint(int32_t bigint_one[], int32_t bigint_two[], uint8_t len)
+{
+    for (int8_t i = len-1; i >= 0; i--) {
+        if (bigint_one[i] > bigint_two[i]) {
+            return 1;
+        }
+        if (bigint_one[i] < bigint_two[i]) {
+            return -1;
+        }
+    }
+    return 0;
+}
+
+int bigint_not(int32_t bigint[], uint8_t len)
+{
+    for (uint8_t i = 0; i < len; i++) {
+        bigint[i] = ~bigint[i];
+    }
+    return 0;
+}
