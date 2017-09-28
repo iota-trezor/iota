@@ -3,18 +3,20 @@
 
 #include <stdio.h>
 
-static const int32_t HALF_3[12] = { 0xa5ce8964,
-                                    0x9f007669,
-                                    0x1484504f,
-                                    0x3ade00d9,
-                                    0x0c24486e,
-                                    0x50979d57,
-                                    0x79a4c702,
-                                    0x48bbae36,
-                                    0xa9f6808b,
-                                    0xaa06a805,
-                                    0xa87fabdf,
-                                    0x5e69ebef};
+static const int32_t HALF_3[13] = { 0xF16B9C2D,
+                                    0xDD01633C,
+                                    0x3D8CF0EE,
+                                    0xB09A028B,
+                                    0x246CD94A,
+                                    0xF1C6D805,
+                                    0x6CEE5506,
+                                    0xDA330AA3,
+                                    0xFDE381A1,
+                                    0xFE13F810,
+                                    0xF97f039E,
+                                    0x1B3DC3CE,
+                                    0x00000001};
+
 
 int trits_to_trytes(const trit_t trits_in[], tryte_t trytes_out[], uint32_t trit_len)
 {
@@ -72,9 +74,9 @@ int int32_to_trits(const int32_t value, trit_t trits_out[], uint8_t max_len)
 
 int trits_to_bytes(const trit_t trits_in[], int32_t bytes_out[])
 {
-    int32_t base[12] = {0};
-    int32_t size = 12;
-    for (int16_t i = 243 - 1; i-- > 0;) {
+    int32_t base[13] = {0};
+    int32_t size = 13;
+    for (int16_t i = 243; i-- > 0;) {
         // multiply
         {
             int32_t sz = size;
@@ -89,36 +91,36 @@ int trits_to_bytes(const trit_t trits_in[], int32_t bytes_out[])
 
             if (carry > 0) {
                 printf("ERR");
-                base[sz] = carry;
-                size++;
+                //base[sz] = carry;
+                //size++;
             }
         }
 
         // add
         {
             int32_t tmp[12];
-            bigint_add_int(base, trits_in[i]+1, tmp, 12);
-            memcpy(base, tmp, 48);
+            bigint_add_int(base, trits_in[i]+1, tmp, 13);
+            memcpy(base, tmp, 52);
             // todo sz>size stuff
         }
     }
 
     if(0) {
-        for (int32_t i = 0; i < 12; i++) {
+        for (int32_t i = 0; i < 13; i++) {
             printf("%08x ", base[i]);
         }
         printf("\n");
     }
 
-    if (bigint_cmp_bigint(HALF_3, base, 12) <= 0 ) {
-        int32_t tmp[12];
-        bigint_sub_bigint(base, HALF_3, tmp, 12);
-        memcpy(base, tmp, 48);
+    if (bigint_cmp_bigint(HALF_3, base, 13) <= 0 ) {
+        int32_t tmp[13];
+        bigint_sub_bigint(base, HALF_3, tmp, 13);
+        memcpy(base, tmp, 52);
     } else {
-        int32_t tmp[12];
-        bigint_sub_bigint(HALF_3, base, tmp, 12);
-        bigint_not(tmp, 12);
-        bigint_add_int(tmp, 1, base, 12);
+        int32_t tmp[13];
+        bigint_sub_bigint(HALF_3, base, tmp, 13);
+        bigint_not(tmp, 13);
+        bigint_add_int(tmp, 1, base, 13);
     }
 
     memcpy(bytes_out, base, 48);
