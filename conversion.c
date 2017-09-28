@@ -99,7 +99,12 @@ int trits_to_bytes(const trit_t trits_in[], int32_t bytes_out[])
         // add
         {
             int32_t tmp[12];
-            bigint_add_int(base, trits_in[i]+1, tmp, 13);
+            // Ignore the last trit
+            if (i == 242) {
+                bigint_add_int(base, 1, tmp, 13);
+            } else {
+                bigint_add_int(base, trits_in[i]+1, tmp, 13);
+            }
             memcpy(base, tmp, 52);
             // todo sz>size stuff
         }
@@ -124,5 +129,29 @@ int trits_to_bytes(const trit_t trits_in[], int32_t bytes_out[])
     }
 
     memcpy(bytes_out, base, 48);
+    return 0;
+}
+
+int bytes_to_trits(const int32_t bytes_in[], trit_t trits_out[])
+{
+    int32_t base[13] = {0};
+    // Add half_3, make sure bytes_in is appended with an empty int32
+    int32_t tmp[13] = {0};
+    memcpy(tmp, bytes_in, 48);
+    bigint_add_bigint(tmp, HALF_3, base, 13);
+
+    uint32_t rem = 0;
+    for (int16_t i = 0; i < 243; i++) {
+        rem = 0;
+        for (int8_t j = 13-1; j >= 0 ; j--) {
+            uint64_t lhs = (uint64_t)(base[j] & 0xFFFFFFFF) + (uint64_t)(rem != 0 ? ((uint64_t)rem * 0xFFFFFFFF) + rem : 0);
+            uint64_t q = (lhs / 3) & 0xFFFFFFFF;
+            uint8_t r = lhs % 3;
+
+            base[j] = q;
+            rem = r;
+        }
+        trits_out[i] = rem - 1;
+    }
     return 0;
 }
