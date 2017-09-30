@@ -17,6 +17,8 @@ static const int32_t HALF_3[13] = { 0xF16B9C2D,
                                     0x1B3DC3CE,
                                     0x00000001};
 
+static const char tryte_to_char_mapping[] = "NOPQRSTUVWXYZ9ABCDEFGHIJKLM";
+
 
 int trits_to_trytes(const trit_t trits_in[], tryte_t trytes_out[], uint32_t trit_len)
 {
@@ -153,5 +155,28 @@ int bytes_to_trits(const int32_t bytes_in[], trit_t trits_out[])
         }
         trits_out[i] = rem - 1;
     }
+    return 0;
+}
+
+int chars_to_trytes(const char chars_in[], tryte_t trytes_out[], uint8_t len)
+{
+    for (uint8_t i = 0; i < len; i++) {
+        if (chars_in[i] == '9') {
+            trytes_out[i] = 0;
+        } else if ((int8_t)chars_in[i] >= 'N') {
+            trytes_out[i] = (int8_t)(chars_in[i]) - 64 - 27;
+        } else {
+            trytes_out[i] = (int8_t)(chars_in[i]) - 64;
+        }
+    }
+    return 0;
+}
+
+int trytes_to_chars(const tryte_t trytes_in[], char chars_out[], uint8_t len)
+{
+    for (uint8_t i = 0; i < len; i++) {
+        chars_out[i] = tryte_to_char_mapping[trytes_in[i] + 13];
+    }
+
     return 0;
 }
