@@ -34,7 +34,7 @@ int bigint_add_int(int32_t bigint_in[], int32_t int_in, int32_t bigint_out[], ui
     return 0;
 }
 
-int bigint_add_bigint(int32_t bigint_one[], int32_t bigint_two[], int32_t bigint_out[], uint8_t len)
+int bigint_add_bigint(const int32_t bigint_one[], const int32_t bigint_two[], int32_t bigint_out[], uint8_t len)
 {
     struct int_bool_pair val;
     val.hi = false;

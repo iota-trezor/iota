@@ -137,10 +137,26 @@ int trits_to_words(const trit_t trits_in[], int32_t words_out[])
 int words_to_trits(const int32_t words_in[], trit_t trits_out[])
 {
     int32_t base[13] = {0};
-    // Add half_3, make sure words_in is appended with an empty int32
     int32_t tmp[13] = {0};
     memcpy(tmp, words_in, 48);
-    bigint_add_bigint(tmp, HALF_3, base, 13);
+    bool flip_trits = false;
+    // check if big num is negative
+    if (words_in[11] >> 31 != 0) {
+        tmp[12] = 0xFFFFFFFF;
+        bigint_not(tmp, 13);
+        if (bigint_cmp_bigint(tmp, HALF_3, 13) > 0) {
+            bigint_sub_bigint(tmp, HALF_3, base, 13);
+            flip_trits = true;
+        } else {
+            bigint_add_int(tmp, 1, base, 13);
+            bigint_sub_bigint(HALF_3, base, tmp, 13);
+            memcpy(base, tmp, 52);
+        }
+    } else {
+        // Add half_3, make sure words_in is appended with an empty int32
+        bigint_add_bigint(tmp, HALF_3, base, 13);
+    }
+
 
     uint32_t rem = 0;
     for (int16_t i = 0; i < 243; i++) {
@@ -154,6 +170,9 @@ int words_to_trits(const int32_t words_in[], trit_t trits_out[])
             rem = r;
         }
         trits_out[i] = rem - 1;
+        if (flip_trits) {
+            trits_out[i] = -trits_out[i];
+        }
     }
     return 0;
 }
@@ -197,10 +216,10 @@ int bytes_to_words(const char bytes_in[], int32_t words_out[], uint8_t word_len)
 {
     for (uint8_t i = 0; i < word_len; i++) {
         words_out[i] = 0;
-        words_out[i] |= (bytes_in[(word_len-1-i)*4+0] & 0x000000FF) << 24;
-        words_out[i] |= (bytes_in[(word_len-1-i)*4+1] & 0x000000FF) << 16;
-        words_out[i] |= (bytes_in[(word_len-1-i)*4+2] & 0x000000FF) << 8;
-        words_out[i] |= (bytes_in[(word_len-1-i)*4+3] & 0x000000FF) << 0;
+        words_out[i] |= (bytes_in[(word_len-1-i)*4+0] << 24) & 0xFF000000;
+        words_out[i] |= (bytes_in[(word_len-1-i)*4+1] << 16) & 0x00FF0000;
+        words_out[i] |= (bytes_in[(word_len-1-i)*4+2] <<  8) & 0x0000FF00;
+        words_out[i] |= (bytes_in[(word_len-1-i)*4+3] <<  0) & 0x000000FF;
     }
     return 0;
 }

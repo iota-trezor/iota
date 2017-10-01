@@ -1,6 +1,7 @@
 #include "kerl.h"
 #include "conversion.h"
 #include "../vendor/trezor-crypto/sha3.h"
+#include <stdio.h>
 
 // Keccak 384 object
 SHA3_CTX ctx;
@@ -26,7 +27,7 @@ int kerl_absorb_trits(const trit_t trits_in[], uint16_t len)
 
 int kerl_squeeze_trits(trit_t trits_out[], uint16_t len)
 {
-    uint8_t bytes_out[48] = {0};
+    char bytes_out[48] = {0};
     keccak_Final(&ctx, bytes_out);
 
     // Convert to trits
@@ -36,5 +37,7 @@ int kerl_squeeze_trits(trit_t trits_out[], uint16_t len)
 
     // Last trit zero
     trits_out[242] = 0;
+
+    return 0;
 
 }
