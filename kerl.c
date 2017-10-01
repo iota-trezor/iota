@@ -38,6 +38,13 @@ int kerl_squeeze_trits(trit_t trits_out[], uint16_t len)
     // Last trit zero
     trits_out[242] = 0;
 
-    return 0;
+    // Flip bytes
+    for (uint8_t i = 0; i < 48; i++) {
+        bytes_out[i] = bytes_out[i] ^ 0xFF;
+    }
 
+    keccak_384_Init(&ctx);
+    keccak_Update(&ctx, bytes_out, 48);
+
+    return 0;
 }
