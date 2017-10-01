@@ -20,8 +20,8 @@ int trytes_to_trits(const tryte_t trytes_in[], trit_t trits_out[], uint32_t tryt
 int int32_to_trits(const int32_t value, trit_t trits_out[], uint8_t max_len);
 int tryte_to_trits(const tryte_t tryte, trit_t trits_out[]);
 
-int trits_to_bytes(const trit_t trits_in[], int32_t bytes_out[]);
-int bytes_to_trits(const int32_t bytes_in[], trit_t trits_out[]);
+int trits_to_words(const trit_t trits_in[], int32_t words_out[]);
+int words_to_trits(const int32_t words_in[], trit_t trits_out[]);
 
 int chars_to_trytes(const char chars_in[], tryte_t trytes_out[], uint8_t len);
 int trytes_to_chars(const tryte_t trytes_in[], char chars_out[], uint8_t len);

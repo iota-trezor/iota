@@ -74,7 +74,7 @@ int int32_to_trits(const int32_t value, trit_t trits_out[], uint8_t max_len)
     return ret;
 }
 
-int trits_to_bytes(const trit_t trits_in[], int32_t bytes_out[])
+int trits_to_words(const trit_t trits_in[], int32_t words_out[])
 {
     int32_t base[13] = {0};
     int32_t size = 13;
@@ -130,16 +130,16 @@ int trits_to_bytes(const trit_t trits_in[], int32_t bytes_out[])
         bigint_add_int(tmp, 1, base, 13);
     }
 
-    memcpy(bytes_out, base, 48);
+    memcpy(words_out, base, 48);
     return 0;
 }
 
-int bytes_to_trits(const int32_t bytes_in[], trit_t trits_out[])
+int words_to_trits(const int32_t words_in[], trit_t trits_out[])
 {
     int32_t base[13] = {0};
-    // Add half_3, make sure bytes_in is appended with an empty int32
+    // Add half_3, make sure words_in is appended with an empty int32
     int32_t tmp[13] = {0};
-    memcpy(tmp, bytes_in, 48);
+    memcpy(tmp, words_in, 48);
     bigint_add_bigint(tmp, HALF_3, base, 13);
 
     uint32_t rem = 0;
