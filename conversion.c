@@ -180,3 +180,27 @@ int trytes_to_chars(const tryte_t trytes_in[], char chars_out[], uint8_t len)
 
     return 0;
 }
+
+int words_to_bytes(const int32_t words_in[], char bytes_out[], uint8_t word_len)
+{
+    for (uint8_t i = 0; i < word_len; i++) {
+        bytes_out[i*4+0] = (words_in[word_len-1-i] >> 24);
+        bytes_out[i*4+1] = (words_in[word_len-1-i] >> 16);
+        bytes_out[i*4+2] = (words_in[word_len-1-i] >> 8);
+        bytes_out[i*4+3] = (words_in[word_len-1-i] >> 0);
+    }
+
+    return 0;
+}
+
+int bytes_to_words(const char bytes_in[], int32_t words_out[], uint8_t word_len)
+{
+    for (uint8_t i = 0; i < word_len; i++) {
+        words_out[i] = 0;
+        words_out[i] |= (bytes_in[(word_len-1-i)*4+0] & 0x000000FF) << 24;
+        words_out[i] |= (bytes_in[(word_len-1-i)*4+1] & 0x000000FF) << 16;
+        words_out[i] |= (bytes_in[(word_len-1-i)*4+2] & 0x000000FF) << 8;
+        words_out[i] |= (bytes_in[(word_len-1-i)*4+3] & 0x000000FF) << 0;
+    }
+    return 0;
+}
