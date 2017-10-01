@@ -13,16 +13,18 @@ int kerl_initialize()
 
 int kerl_absorb_trits(const trit_t trits_in[], uint16_t len)
 {
-    // Last trit to zero
-    trit_t trits[243] = {0} ;
-    memcpy(trits, trits_in, 242);
+    for (uint8_t i = 0; i < (len/243); i++) {
+        // Last trit to zero
+        trit_t trits[243] = {0};
+        memcpy(trits, &trits_in[i*243], 242);
 
-    // First, convert to bytes
-    int32_t words[12];
-    char bytes[48];
-    trits_to_words(trits, words);
-    words_to_bytes(words, bytes, 12);
-    keccak_Update(&ctx, bytes, 48);
+        // First, convert to bytes
+        int32_t words[12];
+        char bytes[48];
+        trits_to_words(trits, words);
+        words_to_bytes(words, bytes, 12);
+        keccak_Update(&ctx, bytes, 48);
+    }
 }
 
 int kerl_squeeze_trits(trit_t trits_out[], uint16_t len)

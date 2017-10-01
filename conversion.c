@@ -40,7 +40,6 @@ int trytes_to_trits(const tryte_t trytes_in[], trit_t trits_out[], uint32_t tryt
         trits_out[i*3+0] = trits_mapping[idx][0];
         trits_out[i*3+1] = trits_mapping[idx][1];
         trits_out[i*3+2] = trits_mapping[idx][2];
-        //printf("%c", seed[i]);
     }
     return 0;
 }
