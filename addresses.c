@@ -1,10 +1,36 @@
 #include "addresses.h"
 #include "kerl.h"
 
+// TODO: make sure we can add more index than uint32
+int add_index_to_seed(trit_t trits[], uint32_t index)
+{
+    for (uint32_t i = 0; i < index; i++) {
+        // Add one
+        uint8_t offset = 0;
+        bool carry = true;
+        while(carry && offset < 243) {
+            trits[offset] = trits[offset] + 1;
+            if (trits[offset] > 1) {
+                trits[offset] = -1;
+            } else {
+                carry = false;
+            }
+            if (carry) {
+                offset++;
+            }
+        }
+
+    }
+}
+
 int generate_private_key(const trit_t seed_trits[], const uint32_t index, trit_t private_key[])
 {
     trit_t tmp[243];
     memcpy(tmp, seed_trits, 243);
+
+    // Add index
+    add_index_to_seed(tmp, index);
+
     kerl_initialize();
     kerl_absorb_trits(tmp, 243);
     kerl_squeeze_trits(tmp, 243);
