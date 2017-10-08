@@ -111,13 +111,6 @@ int trits_to_words(const trit_t trits_in[], int32_t words_out[])
         }
     }
 
-    if(0) {
-        for (int32_t i = 0; i < 13; i++) {
-            printf("%08x ", base[i]);
-        }
-        printf("\n");
-    }
-
     if (bigint_cmp_bigint(HALF_3, base, 13) <= 0 ) {
         int32_t tmp[13];
         bigint_sub_bigint(base, HALF_3, tmp, 13);
@@ -199,7 +192,7 @@ int trytes_to_chars(const tryte_t trytes_in[], char chars_out[], uint8_t len)
     return 0;
 }
 
-int words_to_bytes(const int32_t words_in[], char bytes_out[], uint8_t word_len)
+int words_to_bytes(const int32_t words_in[], unsigned char bytes_out[], uint8_t word_len)
 {
     for (uint8_t i = 0; i < word_len; i++) {
         bytes_out[i*4+0] = (words_in[word_len-1-i] >> 24);
@@ -211,7 +204,7 @@ int words_to_bytes(const int32_t words_in[], char bytes_out[], uint8_t word_len)
     return 0;
 }
 
-int bytes_to_words(const char bytes_in[], int32_t words_out[], uint8_t word_len)
+int bytes_to_words(const unsigned char bytes_in[], int32_t words_out[], uint8_t word_len)
 {
     for (uint8_t i = 0; i < word_len; i++) {
         words_out[i] = 0;

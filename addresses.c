@@ -19,8 +19,8 @@ int add_index_to_seed(trit_t trits[], uint32_t index)
                 offset++;
             }
         }
-
     }
+    return 0;
 }
 
 int generate_private_key(const trit_t seed_trits[], const uint32_t index, trit_t private_key[])
@@ -44,6 +44,7 @@ int generate_private_key(const trit_t seed_trits[], const uint32_t index, trit_t
             kerl_squeeze_trits(&private_key[i*243*27+j*243], 243);
         }
     }
+    return 0;
 }
 
 int generate_public_address(const trit_t private_key[], trit_t address_out[])
@@ -72,4 +73,5 @@ int generate_public_address(const trit_t private_key[], trit_t address_out[])
     kerl_initialize();
     kerl_absorb_trits(digests, 243*2);
     kerl_squeeze_trits(address_out, 243);
+    return 0;
 }

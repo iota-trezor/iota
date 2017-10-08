@@ -1,6 +1,5 @@
 #include "bigint.h"
 
-#include <stdio.h>
 struct int_bool_pair full_add(const int32_t ia, const int32_t ib, const bool carry)
 {
     uint64_t v = (uint64_t)(ia & 0xFFFFFFFF) + (uint64_t)(ib & 0xFFFFFFFF);
