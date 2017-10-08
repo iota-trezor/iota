@@ -12,6 +12,12 @@ int kerl_initialize(void)
     return 0;
 }
 
+int kerl_absorb_bytes(const unsigned char bytes_in[], uint16_t len)
+{
+    keccak_Update(&ctx, bytes_in, len);
+    return 0;
+}
+
 int kerl_absorb_trits(const trit_t trits_in[], uint16_t len)
 {
     for (uint8_t i = 0; i < (len/243); i++) {
