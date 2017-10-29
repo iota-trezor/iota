@@ -1,5 +1,11 @@
+#ifndef UNITTESTING
 #include "../gettext.h"
 #include "../layout2.h"
+#else
+// some stuff to mock trezor graphical functions
+#define _(X) (X)
+void layoutProgress(const char* descr, int prog){ while(0) {} }
+#endif
 #include "addresses.h"
 #include "kerl.h"
 
