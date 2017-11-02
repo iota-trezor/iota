@@ -71,3 +71,39 @@ void calculate_standard_bundle_hash(const char from_addr[], const char to_addr[]
     kerl_squeeze_trits(trits_out, 243);
     trits_to_trytes(trits_out, bundle_hash_out, 243);
 }
+
+void normalize_hash(const tryte_t hash_in[], tryte_t normalized_hash_out[])
+{
+    for (int8_t i = 0; i < 3; i++) {
+        int8_t chunk[27] = {0};
+        memcpy(chunk, &hash_in[i*27], 27);
+
+        int32_t sum = 0;
+        for (int8_t j = 0; j < 27; j++) {
+
+            sum += chunk[j];
+        }
+
+        if (sum >= 0) {
+            while (sum-- > 0) {
+                for (int8_t j = 0; j < 27; j++) {
+                    if (chunk[j] > -13) {
+
+                        chunk[j]--;
+                        break;
+                    }
+                }
+            }
+        } else {
+            while (sum++ < 0) {
+                for (int8_t j = 0; j < 27; j++) {
+                    if (chunk[j] < 13) {
+                        chunk[j]++;
+                        break;
+                    }
+                }
+            }
+        }
+        memcpy(&normalized_hash_out[i*27], chunk, 27);
+    }
+}
