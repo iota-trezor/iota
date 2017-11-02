@@ -27,6 +27,6 @@ int words_to_bytes(const int32_t words_in[], unsigned char bytes_out[], uint8_t 
 int bytes_to_words(const unsigned char bytes_in[], int32_t words_out[], uint8_t word_len);
 
 int chars_to_trytes(const char chars_in[], tryte_t trytes_out[], uint8_t len);
-int trytes_to_chars(const tryte_t trytes_in[], char chars_out[], uint8_t len);
+int trytes_to_chars(const tryte_t trytes_in[], char chars_out[], uint16_t len);
 
 #endif // CONVERSION_H

@@ -183,9 +183,9 @@ int chars_to_trytes(const char chars_in[], tryte_t trytes_out[], uint8_t len)
     return 0;
 }
 
-int trytes_to_chars(const tryte_t trytes_in[], char chars_out[], uint8_t len)
+int trytes_to_chars(const tryte_t trytes_in[], char chars_out[], uint16_t len)
 {
-    for (uint8_t i = 0; i < len; i++) {
+    for (uint16_t i = 0; i < len; i++) {
         chars_out[i] = tryte_to_char_mapping[trytes_in[i] + 13];
     }
 
