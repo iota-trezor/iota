@@ -52,7 +52,7 @@ void get_bundle_essence_trits(const char address[], uint64_t value, const char t
     }
 }
 
-void calculate_standard_bundle_hash(const char from_addr[], const char to_addr[], const char remainder_addr[], uint64_t balance, uint64_t transaction_amount, const char tag[], uint64_t timestamp, char bundle_hash_out[])
+void calculate_standard_bundle_hash(const char from_addr[], const char to_addr[], const char remainder_addr[], uint64_t balance, uint64_t transaction_amount, const char tag[], uint64_t timestamp, tryte_t bundle_hash_out[])
 {
     kerl_initialize();
 
@@ -67,13 +67,7 @@ void calculate_standard_bundle_hash(const char from_addr[], const char to_addr[]
     get_bundle_essence_trits(remainder_addr, balance-transaction_amount, tag, timestamp, 3, 3, bundle_essence_trits);
     kerl_absorb_trits(bundle_essence_trits, 486);
 
-    {
-        trit_t trits_out[243];
-        kerl_squeeze_trits(trits_out, 243);
-        tryte_t trytes_out[81];
-        trits_to_trytes(trits_out, trytes_out, 243);
-        trytes_to_chars(trytes_out, bundle_hash_out, 81);
-    }
-
-    //memcpy(bundle_hash_out, &bundle_essence_trits[81], 27);
+    trit_t trits_out[243];
+    kerl_squeeze_trits(trits_out, 243);
+    trits_to_trytes(trits_out, bundle_hash_out, 243);
 }
