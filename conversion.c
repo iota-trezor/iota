@@ -1,8 +1,6 @@
 #include "conversion.h"
 #include "bigint.h"
 
-#include <stdio.h>
-
 static const int32_t HALF_3[13] = { 0xF16B9C2D,
                                     0xDD01633C,
                                     0x3D8CF0EE,
@@ -91,7 +89,7 @@ int trits_to_words(const trit_t trits_in[], int32_t words_out[])
             }
 
             if (carry > 0) {
-                printf("ERR");
+                //printf("ERR");
                 //base[sz] = carry;
                 //size++;
             }
