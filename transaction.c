@@ -158,14 +158,17 @@ void normalize_hash(const tryte_t hash_in[], tryte_t normalized_hash_out[])
     }
 }
 
-void generate_signature_fragment(tryte_t normalized_bundle_hash_fragment[], trit_t private_key_fragment[], trit_t signature_fragment[])
+void generate_signature_fragment(tryte_t normalized_bundle_hash_fragment[], trit_t private_key_fragment[], trit_t signature_fragment[], void (*progress_callback)(uint32_t progress))
 {
     memcpy(signature_fragment, private_key_fragment, 6561);
     for (int8_t j = 0; j < 27; j++) {
+		int progress = j*37;
+		progress_callback(progress);
         for (int8_t k = 13 - normalized_bundle_hash_fragment[j]; k-- > 0; ) {
             kerl_initialize();
             kerl_absorb_trits(&signature_fragment[j*243], 243);
             kerl_squeeze_trits(&signature_fragment[j*243], 243);
         }
     }
+	progress_callback(1000);
 }
